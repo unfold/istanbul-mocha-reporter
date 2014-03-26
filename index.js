@@ -95,9 +95,7 @@ IstanbulMochaReporter.prototype.sourceRows = function(file) {
   }).join('\n')
 }
 
-module.exports = IstanbulMochaReporter
-
-exports.report = function(options) {
+IstanbulMochaReporter.report = function(options) {
   var reporter = new IstanbulMochaReporter(options)
 
   var suite = document.createElement('li')
@@ -140,3 +138,5 @@ exports.report = function(options) {
   var report = document.getElementById('mocha-report')
   report.appendChild(suite)
 }
+
+module.exports = IstanbulMochaReporter
