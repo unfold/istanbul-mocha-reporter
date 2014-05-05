@@ -1,11 +1,11 @@
 var utils = require('istanbul/lib/object-utils')
 
 var testClass = function(percent) {
-  if (percent == 100) return 'pass fast'
-  if (percent >= 75) return 'pass medium'
-  if (percent >= 50) return 'pass slow'
+  if (percent == 100) return 'pass complete'
+  if (percent >= 75) return 'pass high'
+  if (percent >= 50) return 'pass medium'
 
-  return 'fail'
+  return 'fail low'
 }
 
 var highlightSource = function(source) {
@@ -50,7 +50,7 @@ IstanbulMochaReporter.prototype.file = function(file) {
 
   var html = '<li class="test ' + testClass(percent) + '">'
   html += '<h2 id="' + filename + '">' + filename
-  html += '<span class="duration">' + Math.round(percent) + '%</span>'
+  html += '<span class="coverage">' + Math.round(percent) + '%</span>'
   html += '</h2>'
   html += this.source(file, percent == 100)
 
@@ -96,6 +96,10 @@ IstanbulMochaReporter.prototype.sourceRows = function(file) {
 }
 
 IstanbulMochaReporter.report = function(options) {
+  var container = document.getElementById('mocha-report')
+
+  if (!container) return
+
   var reporter = new IstanbulMochaReporter(options)
 
   var suite = document.createElement('li')
@@ -118,6 +122,11 @@ IstanbulMochaReporter.report = function(options) {
 
   var style = document.createElement('style')
   style.appendChild(document.createTextNode([
+    '.coverage { font-size: 9px; margin-left: 5px; padding: 2px 5px; color: #fff; box-shadow: inset 0 1px 1px rgba(0,0,0,.2); border-radius: 5px; }',
+    '.complete .coverage { display: none }',
+    '.high .coverage{ background: #4ab948; }',
+    '.medium .coverage{ background: #c09853; }',
+    '.low .coverage{ background: #b94a48; }',
     '.source { width: 80%; margin-top: 10px; margin-bottom: 20px; border-collapse: collapse; border: 1px solid #cbcbcb; color: #363636; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }',
     '.source thead { display: none; }',
     '.source .line-number, .source .hits { width: 20px; background: #eaeaea; text-align: center; font-size: 11px; padding: 0 10px; color: #949494; }',
@@ -135,8 +144,7 @@ IstanbulMochaReporter.report = function(options) {
   var head = document.getElementsByTagName('head')[0]
   head.appendChild(style)
 
-  var report = document.getElementById('mocha-report')
-  report.appendChild(suite)
+  container.appendChild(suite)
 }
 
 module.exports = IstanbulMochaReporter
