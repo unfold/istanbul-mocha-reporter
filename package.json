@@ -4,6 +4,6 @@
   "author": "Simen Brekken <simen@unfold.no>",
   "description": "Istanbul Mocha Reporter",
   "dependencies": {
-    "istanbul": "^0.2.6"
+    "istanbul": "^0.4.5"
   }
 }
